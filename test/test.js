@@ -53,7 +53,7 @@ describe("Central Server API tests:", () => {
 			.expect("content-type", /json/)
 			.expect(200)
 			.then(res => {
-				assert.equal(res.body.length, config.devices.filter(device => device.clientProjectID === clientProjectID).length);
+				assert.equal(res.body.devices.length, config.devices.filter(device => device.clientProjectID === clientProjectID).length);
 			});
 	});
 });

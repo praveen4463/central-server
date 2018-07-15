@@ -34,7 +34,7 @@ To run:
 1) cd into the project
 2) npm install
 3) npm start
-4) npm test (to build but make sure to test after starting server because test is dependent on 'live' api and not using a "mock" api.)
+4) npm test (to build but make sure to test after starting this server and all drone servers because test is dependent on 'live' api and not using a "mock" api.)
 5) server can be tested as localhost:3000/getAllDevices/999 with "authorization" header should be set to 'server_key' where 999 is clients' projectID. (see config.)
 
 To build Docker image:

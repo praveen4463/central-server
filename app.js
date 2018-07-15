@@ -5,8 +5,11 @@ const NodeCache = require("node-cache");
 const memCached = new NodeCache({stdTTL: 100, checkperiod: 120});
 const request = require("superagent");
 const cacheKeyTemplate = "#clientProjectID#_cache";
+const cors = require("cors");
 
-app.get("/getAllDevices/:projID", (req, res) => {
+app.options("/getAllDevices/:projID", cors());
+
+app.get("/getAllDevices/:projID", cors(), (req, res) => {
 	const incomingAuthKey = req.get("authorization");
 	if(!incomingAuthKey || config.apiKey !== incomingAuthKey) {
 		return res.status(401).send({"error": "Auth key invalid or not found."});
@@ -17,7 +20,7 @@ app.get("/getAllDevices/:projID", (req, res) => {
 			if(!_deviceDetails) {
 				return res.status(200).send({"error": "no device found"});
 			}
-			res.status(200).send(_deviceDetails);
+			res.status(200).send({"devices": _deviceDetails});
 		})
 		.catch(_err => {
 			res.status(500).send({"error": _err});
