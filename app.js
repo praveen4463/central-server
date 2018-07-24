@@ -7,15 +7,15 @@ const request = require("superagent");
 const cacheKeyTemplate = "#clientProjectID#_cache";
 const cors = require("cors");
 
-app.options("/getAllDevices/:projID", cors());
+app.options("/devices/:projID", cors());
 
-app.get("/getAllDevices/:projID", cors(), (req, res) => {
+app.get("/devices/:projID", cors(), (req, res) => {
 	const incomingAuthKey = req.get("authorization");
 	if(!incomingAuthKey || config.apiKey !== incomingAuthKey) {
 		return res.status(401).send({"error": "Auth key invalid or not found."});
 	}
 
-	getDeviceDetails(req.params.projID)
+	devices(req.params.projID)
 		.then(_deviceDetails => {
 			if(!_deviceDetails) {
 				return res.status(200).send({"error": "no device found"});
@@ -29,7 +29,7 @@ app.get("/getAllDevices/:projID", cors(), (req, res) => {
 
 //In real time, all devices in a clients' project will be fetched and then devices will be contacted. config.js will act as DB store for now.
 //and in-memory cache will act as memCached.
-function getDeviceDetails(clientProjectID) {
+function devices(clientProjectID) {
 	//using Promise to simulate a DB's API or cache call.
 	const callCacheOrDBApiAndGetDevices = (cacheKey) => {
 		memCached.get(cacheKey, (err, devices) => {

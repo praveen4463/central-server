@@ -8,20 +8,20 @@ const restApiEndpoint = `http://localhost:${config.apiPort}`;
 describe("Central Server API tests:", () => {
 	it("Should return 401 without authorization header", (done) => {
 		request(restApiEndpoint)
-			.get("/getAllDevices/1332")
+			.get("/devices/1332")
 			.expect(401, done);
 	});
 
 	it("Should return 401 with wrong authorization key", (done) => {
 		request(restApiEndpoint)
-			.get("/getAllDevices/1332")
+			.get("/devices/1332")
 			.set("authorization", "LPJ3324")
 			.expect(401, done);
 	});
 
 	it("Should return 200 with authorization header and parameter", (done) => {
 		request(restApiEndpoint)
-			.get("/getAllDevices/1332")
+			.get("/devices/1332")
 			.set("authorization", `${config.apiKey}`)
 			.expect("content-type", /json/)
 			.expect(200, done);
@@ -29,14 +29,14 @@ describe("Central Server API tests:", () => {
 
 	it("Should return 404 without parameter", (done) => {
 		request(restApiEndpoint)
-			.get("/getAllDevices")
+			.get("/devices")
 			.set("authorization", `${config.apiKey}`)
 			.expect(404, done);
 	});
 
 	it("Should return error with invalid parameter", () => {
 		return request(restApiEndpoint)
-			.get("/getAllDevices/33211")
+			.get("/devices/33211")
 			.set("authorization", `${config.apiKey}`)
 			.expect("content-type", /json/)
 			.expect(200)
@@ -48,7 +48,7 @@ describe("Central Server API tests:", () => {
 	it("Should return all available devices with correct parameter", () => {
 		const clientProjectID = 999;
 		return request(restApiEndpoint)
-			.get(`/getAllDevices/${clientProjectID}`)
+			.get(`/devices/${clientProjectID}`)
 			.set("authorization", `${config.apiKey}`)
 			.expect("content-type", /json/)
 			.expect(200)
